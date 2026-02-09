@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAY PLAYER • Premium Music Streaming</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen">
+        <div class="loading-content">
+            <div class="logo-loading">
+                <div class="logo-icon">J</div>
+                <h1>JAY PLAYER</h1>
+            </div>
+            <div class="loading-spinner">
+                <div class="spinner-bar"></div>
+                <div class="spinner-bar"></div>
+                <div class="spinner-bar"></div>
+                <div class="spinner-bar"></div>
+            </div>
+            <p class="loading-text">Loading your music universe...</p>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="app-container" id="appContainer" style="display: none;">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <!-- Logo -->
+            <div class="sidebar-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-music"></i>
+                </div>
+                <h1>JAY PLAYER</h1>
+            </div>
+
+            <!-- Main Menu -->
+            <nav class="main-menu">
+                <a href="#" class="menu-item active" data-page="home">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="menu-item" data-page="search">
+                    <i class="fas fa-search"></i>
+                    <span>Search</span>
+                </a>
+                <a href="#" class="menu-item" data-page="library">
+                    <i class="fas fa-book"></i>
+                    <span>Your Library</span>
+                </a>
+                <a href="#" class="menu-item" data-page="playlists">
+                    <i class="fas fa-list-music"></i>
+                    <span>Playlists</span>
+                </a>
+                <a href="#" class="menu-item" data-page="liked">
+                    <i class="fas fa-heart"></i>
+                    <span>Liked Songs</span>
+                </a>
+            </nav>
+
+            <!-- Playlists Section -->
+            <div class="playlists-section">
+                <div class="section-header">
+                    <h3>YOUR PLAYLISTS</h3>
+                    <button class="create-playlist-btn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="playlists-list" id="playlistsList">
+                    <!-- Dynamic playlists will be added here -->
+                    <div class="playlist-item">
+                        <i class="fas fa-music"></i>
+                        <span>Daily Mix 1</span>
+                    </div>
+                    <div class="playlist-item">
+                        <i class="fas fa-music"></i>
+                        <span>Chill Vibes</span>
+                    </div>
+                    <div class="playlist-item">
+                        <i class="fas fa-music"></i>
+                        <span>Workout Energy</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Profile -->
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jay&backgroundColor=7c3aed" alt="Jay">
+                </div>
+                <div class="user-info">
+                    <span class="username">Jay</span>
+                    <span class="user-status">Premium</span>
+                </div>
+                <button class="user-menu-btn">
+                    <i class="fas fa-ellipsis-h"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Top Navigation Bar -->
+            <div class="top-nav">
+                <div class="nav-controls">
+                    <button class="nav-btn prev-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="nav-btn next-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="search-container">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchBox" placeholder="What do you want to listen to?">
+                    </div>
+                </div>
+                <div class="user-actions">
+                    <button class="upgrade-btn">
+                        <i class="fas fa-crown"></i>
+                        <span>Upgrade to Premium</span>
+                    </button>
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <div class="user-dropdown">
+                        <div class="dropdown-toggle">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jay&backgroundColor=7c3aed" alt="User">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Content -->
+            <div class="page-content" id="pageContent">
+                <!-- Home Page (Default) -->
+                <div class="page active" id="homePage">
+                    <div class="page-header">
+                        <h1>Good evening</h1>
+                    </div>
+                    
+                    <!-- Recently Played -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2>Recently Played</h2>
+                            <a href="#" class="see-all">SEE ALL</a>
+                        </div>
+                        <div class="grid-container" id="recentlyPlayed">
+                            <!-- Recently played items will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Made For You -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2>Made For Jay</h2>
+                        </div>
+                        <div class="cards-container" id="madeForYou">
+                            <!-- Personalized content will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Popular Albums -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2>Popular Albums</h2>
+                        </div>
+                        <div class="album-grid" id="popularAlbums">
+                            <!-- Albums will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Top Charts -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2>Top Charts</h2>
+                        </div>
+                        <div class="charts-container" id="topCharts">
+                            <!-- Charts will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search Page -->
+                <div class="page" id="searchPage">
+                    <div class="search-page-header">
+                        <h1>Search</h1>
+                        <div class="search-filters">
+                            <button class="filter-btn active">All</button>
+                            <button class="filter-btn">Songs</button>
+                            <button class="filter-btn">Artists</button>
+                            <button class="filter-btn">Albums</button>
+                            <button class="filter-btn">Playlists</button>
+                        </div>
+                    </div>
+                    <div class="search-results" id="searchResults">
+                        <!-- Search results will appear here -->
+                        <div class="search-placeholder">
+                            <i class="fas fa-search"></i>
+                            <h3>Search for songs, artists, or albums</h3>
+                            <p>Find your favorite music on YouTube and Spotify</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Library Page -->
+                <div class="page" id="libraryPage">
+                    <div class="library-header">
+                        <h1>Your Library</h1>
+                        <div class="library-filters">
+                            <button class="lib-filter-btn active">Playlists</button>
+                            <button class="lib-filter-btn">Artists</button>
+                            <button class="lib-filter-btn">Albums</button>
+                            <button class="lib-filter-btn">Podcasts</button>
+                        </div>
+                    </div>
+                    <div class="library-content" id="libraryContent">
+                        <!-- Library content will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Now Playing Bar (Bottom Player) -->
+                <div class="now-playing-bar">
+                    <div class="player-left">
+                        <div class="now-playing-info">
+                            <div class="now-playing-img" id="nowPlayingImg">
+                                <img src="https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="Now Playing">
+                            </div>
+                            <div class="now-playing-details">
+                                <div class="song-title" id="nowPlayingTitle">Never Gonna Give You Up</div>
+                                <div class="song-artist" id="nowPlayingArtist">Rick Astley</div>
+                            </div>
+                            <button class="like-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="player-center">
+                        <div class="player-controls">
+                            <button class="control-btn shuffle-btn">
+                                <i class="fas fa-random"></i>
+                            </button>
+                            <button class="control-btn prev-btn">
+                                <i class="fas fa-step-backward"></i>
+                            </button>
+                            <button class="control-btn play-btn" id="playBtn">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button class="control-btn next-btn">
+                                <i class="fas fa-step-forward"></i>
+                            </button>
+                            <button class="control-btn repeat-btn">
+                                <i class="fas fa-redo"></i>
+                            </button>
+                        </div>
+                        <div class="player-progress">
+                            <span class="current-time" id="currentTime">0:00</span>
+                            <div class="progress-bar" id="progressBar">
+                                <div class="progress-fill" id="progressFill"></div>
+                                <div class="progress-thumb" id="progressThumb"></div>
+                            </div>
+                            <span class="total-time" id="totalTime">3:30</span>
+                        </div>
+                    </div>
+
+                    <div class="player-right">
+                        <div class="player-options">
+                            <button class="option-btn queue-btn">
+                                <i class="fas fa-list-ul"></i>
+                            </button>
+                            <button class="option-btn device-btn">
+                                <i class="fas fa-laptop"></i>
+                            </button>
+                            <div class="volume-control">
+                                <button class="volume-btn">
+                                    <i class="fas fa-volume-up"></i>
+                                </button>
+                                <div class="volume-slider">
+                                    <div class="volume-fill"></div>
+                                </div>
+                            </div>
+                            <button class="option-btn fullscreen-btn">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Audio Element (Hidden) -->
+                    <audio id="audioPlayer" preload="none">
+                        <source src="" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar (Queue/Now Playing Details) -->
+        <div class="right-sidebar">
+            <div class="sidebar-header">
+                <h3>Queue</h3>
+                <button class="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="queue-list" id="queueList">
+                <!-- Queue items will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div class="toast-container" id="toastContainer">
+            <!-- Toast messages will appear here -->
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    <script src="script.js"></script>
+    <script src="player.js"></script>
+    <script src="scraper.js"></script>
+</body>
+</html>
