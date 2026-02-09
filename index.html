@@ -3,263 +3,518 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JAY PLAYER • Premium Music Streaming</title>
+    <title>JAY PLAYER • Music Streaming</title>
     
-    <!-- CDN dengan fallback -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Local CSS -->
-    <link rel="stylesheet" href="style.css">
-    
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
-    
+    <!-- Styles -->
     <style>
-        /* Minimal loading screen - akan hilang otomatis */
-        #loadingScreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
+        :root {
+            --primary-purple: #7c3aed;
+            --primary-blue: #3b82f6;
+            --dark-bg: #121212;
+            --darker-bg: #000000;
+            --card-bg: #181818;
+            --hover-bg: #282828;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --gradient-primary: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%);
+            --sidebar-width: 240px;
+            --player-height: 90px;
+            --border-radius: 8px;
         }
         
-        .loading-content {
-            text-align: center;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
-        .logo-loading {
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        /* App Container */
+        .app-container {
+            display: flex;
+            height: 100vh;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--darker-bg);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 12px;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .sidebar-logo {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: 12px;
+            padding: 0 12px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         
         .logo-icon {
-            width: 50px;
-            height: 50px;
-            background: white;
-            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            font-weight: 900;
-            color: #7c3aed;
-        }
-        
-        .logo-loading h1 {
-            font-size: 28px;
-            font-weight: 800;
+            font-size: 20px;
             color: white;
         }
         
-        .loading-spinner {
+        .sidebar-logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Main Menu */
+        .main-menu {
+            margin: 24px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .menu-item:hover {
+            color: var(--text-primary);
+            background: var(--hover-bg);
+        }
+        
+        .menu-item.active {
+            background: var(--hover-bg);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .menu-item i {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+        
+        /* Quick Play Buttons */
+        .quick-play-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        
+        .quick-btn {
+            padding: 12px 20px;
+            background: var(--card-bg);
+            border: none;
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .quick-btn:hover {
+            background: var(--hover-bg);
+            transform: translateY(-2px);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .top-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 32px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+        
+        .search-box {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 500px;
+            padding: 8px 16px;
+            margin: 0 20px;
+        }
+        
+        .search-box i {
+            color: var(--text-secondary);
+            margin-right: 12px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .search-box input::placeholder {
+            color: var(--text-secondary);
+        }
+        
+        /* Page Content */
+        .page-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px;
+            padding-bottom: calc(var(--player-height) + 32px);
+        }
+        
+        .page-header {
+            margin-bottom: 32px;
+        }
+        
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+        }
+        
+        /* Now Playing Bar */
+        .now-playing-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: var(--player-height);
+            background: var(--card-bg);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+        }
+        
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        
+        .control-btn {
             width: 40px;
             height: 40px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
         }
         
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* App container default hidden */
-        .app-container {
-            display: none;
-            height: 100vh;
-            background: #121212;
-        }
-        
-        /* Error message styling */
-        .error-message {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #ff4444;
+        .control-btn:hover {
             color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            z-index: 10000;
-            display: none;
+            transform: scale(1.1);
+        }
+        
+        .play-btn {
+            background: white;
+            color: black !important;
+            width: 48px;
+            height: 48px;
+        }
+        
+        .play-btn:hover {
+            background: #f0f0f0;
+            transform: scale(1.05);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+            .sidebar-logo h1,
+            .menu-item span {
+                display: none;
+            }
+            .sidebar-logo {
+                justify-content: center;
+            }
+            .quick-play-buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Error Message -->
-    <div id="errorMessage" class="error-message"></div>
-    
-    <!-- Simplified Loading Screen -->
-    <div id="loadingScreen">
-        <div class="loading-content">
-            <div class="logo-loading">
-                <div class="logo-icon">J</div>
-                <h1>JAY PLAYER</h1>
-            </div>
-            <div class="loading-spinner"></div>
-            <p style="color: white; margin-top: 20px;">Initializing player...</p>
-            <p id="loadStatus" style="color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 10px;">Checking resources...</p>
-        </div>
-    </div>
-
-    <!-- Main App Container -->
-    <div class="app-container" id="appContainer">
-        <!-- Sidebar Navigation -->
+    <!-- Main App (Langsung Tampil) -->
+    <div class="app-container">
+        <!-- Sidebar -->
         <div class="sidebar">
-            <!-- Logo -->
             <div class="sidebar-logo">
                 <div class="logo-icon">
                     <i class="fas fa-music"></i>
                 </div>
                 <h1>JAY PLAYER</h1>
             </div>
-
-            <!-- Main Menu -->
+            
             <nav class="main-menu">
-                <a href="#" class="menu-item active" data-page="home">
+                <a class="menu-item active" onclick="switchPage('home')">
                     <i class="fas fa-home"></i>
                     <span>Home</span>
                 </a>
-                <a href="#" class="menu-item" data-page="search">
+                <a class="menu-item" onclick="switchPage('search')">
                     <i class="fas fa-search"></i>
                     <span>Search</span>
                 </a>
-                <a href="#" class="menu-item" data-page="library">
+                <a class="menu-item" onclick="switchPage('library')">
                     <i class="fas fa-book"></i>
-                    <span>Your Library</span>
+                    <span>Library</span>
                 </a>
-                <a href="#" class="menu-item" data-page="playlists">
+                <a class="menu-item" onclick="switchPage('playlists')">
                     <i class="fas fa-list-music"></i>
                     <span>Playlists</span>
                 </a>
-                <a href="#" class="menu-item" data-page="liked">
-                    <i class="fas fa-heart"></i>
-                    <span>Liked Songs</span>
-                </a>
             </nav>
-
-            <!-- Playlists Section -->
-            <div class="playlists-section">
-                <div class="section-header">
-                    <h3>YOUR PLAYLISTS</h3>
-                    <button class="create-playlist-btn">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </div>
-                <div class="playlists-list" id="playlistsList">
-                    <div class="playlist-item">
-                        <i class="fas fa-music"></i>
-                        <span>Recently Played</span>
-                    </div>
-                    <div class="playlist-item">
-                        <i class="fas fa-heart"></i>
-                        <span>Liked Songs</span>
-                    </div>
-                    <div class="playlist-item">
-                        <i class="fas fa-fire"></i>
-                        <span>Top Hits 2024</span>
+            
+            <div style="margin-top: auto; padding: 20px 12px;">
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=Jay&background=7c3aed&color=fff&size=40" 
+                         alt="Jay" style="width: 40px; height: 40px; border-radius: 50%;">
+                    <div style="margin-left: 12px;">
+                        <div style="font-weight: 600;">Jay</div>
+                        <div style="font-size: 12px; color: var(--primary-purple);">Premium</div>
                     </div>
                 </div>
-            </div>
-
-            <!-- User Profile -->
-            <div class="user-profile">
-                <div class="user-avatar">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jay&backgroundColor=7c3aed" alt="Jay" onerror="this.src='https://ui-avatars.com/api/?name=Jay&background=7c3aed&color=fff'">
-                </div>
-                <div class="user-info">
-                    <span class="username">Jay</span>
-                    <span class="user-status">Premium</span>
-                </div>
-                <button class="user-menu-btn">
-                    <i class="fas fa-ellipsis-h"></i>
-                </button>
             </div>
         </div>
-
-        <!-- Main Content Area -->
+        
+        <!-- Main Content -->
         <div class="main-content">
-            <!-- Top Navigation Bar -->
+            <!-- Top Nav -->
             <div class="top-nav">
-                <div class="nav-controls">
-                    <button class="nav-btn prev-btn">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <button class="control-btn">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                    <button class="nav-btn next-btn">
+                    <button class="control-btn">
                         <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
-                <div class="search-container">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="searchBox" placeholder="What do you want to listen to?" autocomplete="off">
-                    </div>
+                
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search songs, artists..." 
+                           onkeypress="if(event.key=='Enter') searchMusic()">
                 </div>
-                <div class="user-actions">
-                    <button class="upgrade-btn">
-                        <i class="fas fa-crown"></i>
-                        <span>Premium</span>
-                    </button>
-                    <div class="user-dropdown">
-                        <div class="dropdown-toggle">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jay&backgroundColor=7c3aed" alt="User" onerror="this.src='https://ui-avatars.com/api/?name=Jay&background=7c3aed&color=fff'">
-                        </div>
-                    </div>
-                </div>
+                
+                <button style="background: transparent; border: 1px solid white; color: white; 
+                              padding: 8px 20px; border-radius: 500px; cursor: pointer;">
+                    <i class="fas fa-crown"></i> Upgrade
+                </button>
             </div>
-
+            
             <!-- Page Content -->
-            <div class="page-content" id="pageContent">
+            <div class="page-content">
                 <!-- Home Page -->
-                <div class="page active" id="homePage">
+                <div id="homePage" class="page" style="display: block;">
                     <div class="page-header">
                         <h1>Welcome to JAY PLAYER</h1>
-                        <p style="color: #b3b3b3; margin-top: 10px;">Stream unlimited music from YouTube</p>
+                        <p style="color: var(--text-secondary); margin-top: 10px;">
+                            Stream unlimited music directly from YouTube
+                        </p>
                     </div>
                     
-                    <!-- Quick Play -->
-                    <div class="section">
-                        <div class="section-header">
-                            <h2>Quick Play</h2>
-                        </div>
+                    <div style="margin-bottom: 40px;">
+                        <h2 style="margin-bottom: 16px;">Quick Play</h2>
                         <div class="quick-play-buttons">
-                            <button class="quick-btn" data-search="top hits 2024">
+                            <button class="quick-btn" onclick="quickSearch('top hits 2024')">
                                 <i class="fas fa-fire"></i>
                                 <span>Top Hits</span>
                             </button>
-                            <button class="quick-btn" data-search="chill lofi">
+                            <button class="quick-btn" onclick="quickSearch('chill lofi')">
                                 <i class="fas fa-coffee"></i>
                                 <span>Chill LoFi</span>
                             </button>
-                            <button class="quick-btn" data-search="workout music">
+                            <button class="quick-btn" onclick="quickSearch('workout music')">
                                 <i class="fas fa-dumbbell"></i>
                                 <span>Workout</span>
                             </button>
-                            <button class="quick-btn" data-search="study focus">
+                            <button class="quick-btn" onclick="quickSearch('study focus')">
                                 <i class="fas fa-graduation-cap"></i>
                                 <span>Study Focus</span>
                             </button>
                         </div>
                     </div>
-
-                    <!-- Recent Searches -->
-                    <div class="section">
-                        <div class="section-header">
-                            <h2>Popular Searches</h2>
+                    
+                    <div style="background: var(--card-bg); padding: 24px; border-radius: var(--border-radius);">
+                        <h3 style="margin-bottom: 16px;"><i class="fas fa-info-circle"></i> How to Use</h3>
+                        <div style="display: grid; gap: 16px;">
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                                    <div style="background: var(--primary-purple); width: 24px; height: 24px; 
+                                                border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+                                                font-size: 12px;">1</div>
+                                    <h4>Search Music</h4>
+                                </div>
+                                <p style="color: var(--text-secondary); margin-left: 34px;">
+                                    Type any song, artist, or album in the search box
+                                </p>
+                            </div>
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                                    <div style="background: var(--primary-purple); width: 24px; height: 24px; 
+                                                border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+                                                font-size: 12px;">2</div>
+                                    <h4>Play & Enjoy</h4>
+                                </div>
+                                <p style="color: var(--text-secondary); margin-left: 34px;">
+                                    Click play on any result to start streaming
+                                </p>
+                            </div>
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                                    <div style="background: var(--primary-purple); width: 24px; height: 24px; 
+                                                border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+                                                font-size: 12px;">3</div>
+                                    <h4>Build Playlist</h4>
+                                </div>
+                                <p style="color: var(--text-secondary); margin-left: 34px;">
+                                    Add songs to queue for continuous playback
+                                </p>
+                            </div>
                         </div>
-                        <div class="search-tags" id="popularTags">
+                    </div>
+                </div>
+                
+                <!-- Search Page -->
+                <div id="searchPage" class="page" style="display: none;">
+                    <div class="page-header">
+                        <h1>Search Music</h1>
+                        <p style="color: var(--text-secondary); margin-top: 10px;">
+                            Find songs from YouTube
+                        </p>
+                    </div>
+                    
+                    <div id="searchResults" style="margin-top: 30px;">
+                        <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
+                            <i class="fas fa-search" style="font-size: 48px; margin-bottom: 20px; opacity: 0.5;"></i>
+                            <h3 style="margin-bottom: 10px;">Search for music</h3>
+                            <p>Enter keywords in the search box above</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Now Playing Bar -->
+            <div class="now-playing-bar">
+                <div style="width: 30%;">
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <img src="https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" 
+                             alt="Now Playing" style="width: 56px; height: 56px; border-radius: 8px;">
+                        <div>
+                            <div style="font-weight: 600; font-size: 14px;" id="nowPlayingTitle">
+                                Not Playing
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-secondary);" id="nowPlayingArtist">
+                                Search music to begin
+                            </div>
+                        </div>
+                        <button class="control-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div style="width: 40%; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                    <div class="player-controls">
+                        <button class="control-btn" onclick="toggleShuffle()">
+                            <i class="fas fa-random"></i>
+                        </button>
+                        <button class="control-btn" onclick="prevTrack()">
+                            <i class="fas fa-step-backward"></i>
+                        </button>
+                        <button class="control-btn play-btn" onclick="togglePlay()" id="playButton">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button class="control-btn" onclick="nextTrack()">
+                            <i class="fas fa-step-forward"></i>
+                        </button>
+                        <button class="control-btn" onclick="toggleRepeat()">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 12px; width: 100%;">
+                        <span style="font-size: 12px; color: var(--text-secondary); min-width: 40px;" id="currentTime">
+                            0:00
+                        </span>
+                        <div style="flex: 1; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; 
+                                    cursor: pointer;" onclick="seekTrack(event)" id="progressBar">
+                            <div style="height: 100%; background: var(--gradient-primary); border-radius: 2px; 
+                                        width: 0%;" id="progressFill"></div>
+                        </div>
+                        <span style="font-size: 12px; color: var(--text-secondary); min-width: 40px;" id="totalTime">
+                            0:00
+                        </span>
+                    </div>
+                </div>
+                
+                <div style="width: 30%; display: flex; justify-content: flex-end;">
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <button class="control-btn">
+                            <i class="fas fa-list-ul"></i>
+                        </button>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button class="control-btn" onclick="toggleMute()">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                            <div style="width: 80px; height: 4px; background: rgba(255, 255, 255, 0.1); 
+       ="search-tags" id="popularTags">
                             <span class="search-tag" data-query="shape of you ed sheeran">Shape of You</span>
                             <span class="search-tag" data-query="blinding lights weeknd">Blinding Lights</span>
                             <span class="search-tag" data-query="drivers license olivia rodrigo">Drivers License</span>
